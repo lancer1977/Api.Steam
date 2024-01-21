@@ -1,5 +1,5 @@
 using System.Diagnostics;
-using System.Text.Json;  
+using System.Text.Json;
 using PolyhydraGames.Api.Steam.Models;
 using PolyhydraGames.Core.Interfaces;
 using PolyhydraGames.Extensions;
@@ -82,19 +82,5 @@ public class SteamService : ISteamService
         return apps;
     }
 
-    public static IStreamerGame ToGame(SteamGame result)
-    {
-        return new SteamStreamerGame()
-        {
-            // = result.steam_appid, 
-            Title = result.Name,
-            Description = result.ShortDescription,
-            ImageUrl = result.HeaderImage,
-            BackgroundImageUrl = result.Background,
-            Platform = "pc",
-            Year = DateTime.Parse(result.ReleaseDate.date).Year,
-            Developer = result.Developers.FirstOrDefault(),
 
-        };
-    }
 }
