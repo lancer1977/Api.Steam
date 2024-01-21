@@ -1,0 +1,32 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="data\**" />
+    <Compile Remove="Enums\**" />
+    <EmbeddedResource Remove="data\**" />
+    <EmbeddedResource Remove="Enums\**" />
+    <None Remove="data\**" />
+    <None Remove="Enums\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="retroArchGame.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="notify.sh" />
+  </ItemGroup>
+
+  <ItemGroup> 
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" /> 
+    <PackageReference Include="PolyhydraGames.Core.Interfaces" Version="2.0.0.31" /> 
+    <PackageReference Include="PolyhydraGames.Extensions" Version="2.1.1.46" />
+  </ItemGroup>
+
+</Project>
