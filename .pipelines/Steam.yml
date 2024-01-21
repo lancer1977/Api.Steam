@@ -2,7 +2,7 @@
 name: 1.0.2.$(rev:r)
 variables: 
 - name: Project.Path
-  value: '**/Api.Steam.csproj'
+  value: '**/PolyhydraGames.Api.Steam.csproj'
 - name: BuildConfiguration
   value: Release
 trigger:
