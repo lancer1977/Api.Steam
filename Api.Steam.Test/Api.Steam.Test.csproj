@@ -10,12 +10,17 @@
 	</PropertyGroup>
 
 	<ItemGroup>
- 
+
+		<PackageReference Include="PolyhydraGames.Core.Global" Version="1.0.2.40" />
+
+		<PackageReference Include="PolyhydraGames.Core.Models" Version="1.0.0.13" />
+
+		<PackageReference Include="PolyhydraGames.Extensions" Version="2.1.1.46" />
+		<PackageReference Include="StackExchange.Redis" Version="2.7.17" />
 		<PackageReference Include="coverlet.collector" Version="6.0.0">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
-		<PackageReference Include="Moq.AutoMock" Version="3.5.0-ci0498" />
 		<PackageReference Include="PolyhydraGames.Core.Test" Version="1.0.0.13" />
 		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
 		<PackageReference Include="Moq" Version="4.20.70" />
@@ -28,7 +33,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\PolyhydraGames.Api.CDN\PolyhydraGames.Api.CDN.csproj" />
+	  <ProjectReference Include="..\Api.Steam\PolyhydraGames.Api.Steam.csproj" /> 
 	</ItemGroup>
 
 </Project>

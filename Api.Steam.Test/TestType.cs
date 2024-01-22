@@ -1,4 +1,4 @@
-namespace API.CDN.Test;
+namespace Api.Steam.Test;
 
 public enum TestType
 {
@@ -8,4 +8,4 @@ public enum TestType
     Description,
     ImageUrl,
     BackgroundImageUrl
-}
+} 
