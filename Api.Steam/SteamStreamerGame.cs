@@ -1,8 +1,8 @@
-using PolyhydraGames.Core.Interfaces;
+using PolyhydraGames.Core.Interfaces.Gaming;
 
 namespace PolyhydraGames.Api.Steam;
 
-public class SteamStreamerGame : IStreamerGame
+public class SteamStreamerGame : IGame
 {
     public string Title { get; set; }
     public string Core { get; set; }

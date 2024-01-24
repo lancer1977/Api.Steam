@@ -1,11 +1,12 @@
 using PolyhydraGames.Api.Steam.Models;
 using PolyhydraGames.Core.Interfaces;
+using PolyhydraGames.Core.Interfaces.Gaming;
 
 namespace PolyhydraGames.Api.Steam;
 
 public static class SteamExtensions
 {
-    public static IStreamerGame ToGame(this SteamGame result)
+    public static IGame ToGame(this SteamGame result)
     {
         return new SteamStreamerGame()
         {
