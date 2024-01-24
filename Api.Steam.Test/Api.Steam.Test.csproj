@@ -13,7 +13,7 @@
 
 		<PackageReference Include="PolyhydraGames.Core.Global" Version="1.0.2.40" />
 
-		<PackageReference Include="PolyhydraGames.Core.Models" Version="1.0.0.13" />
+		<PackageReference Include="PolyhydraGames.Core.Models" Version="1.0.0.14" />
 
 		<PackageReference Include="PolyhydraGames.Extensions" Version="2.1.1.46" />
 		<PackageReference Include="StackExchange.Redis" Version="2.7.17" />
