@@ -11,9 +11,9 @@
 
 	<ItemGroup>
 
-		<PackageReference Include="PolyhydraGames.Core.Global" Version="1.0.3.2" />
+		<PackageReference Include="PolyhydraGames.Core.Global" Version="1.0.3.3" />
 
-		<PackageReference Include="PolyhydraGames.Core.Models" Version="1.0.0.18" />
+		<PackageReference Include="PolyhydraGames.Core.Models" Version="1.0.0.19" />
 
 		<PackageReference Include="PolyhydraGames.Extensions" Version="2.1.1.48" />
 		<PackageReference Include="StackExchange.Redis" Version="2.7.17" />
