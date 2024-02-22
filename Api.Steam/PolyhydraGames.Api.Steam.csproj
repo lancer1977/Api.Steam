@@ -27,7 +27,7 @@
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" /> 
     <PackageReference Include="PolyhydraGames.Core.Interfaces" Version="2.0.0.36" /> 
     <PackageReference Include="PolyhydraGames.Core.Interfaces.Gaming" Version="1.0.0.4" /> 
-    <PackageReference Include="PolyhydraGames.Extensions" Version="2.1.1.49" />
+    <PackageReference Include="PolyhydraGames.Extensions" Version="2.1.1.50" />
   </ItemGroup>
 
 </Project>
