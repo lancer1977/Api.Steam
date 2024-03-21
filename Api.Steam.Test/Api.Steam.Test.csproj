@@ -11,17 +11,17 @@
 
 	<ItemGroup>
 
-		<PackageReference Include="PolyhydraGames.Core.Global" Version="1.0.3.4" />
+		<PackageReference Include="PolyhydraGames.Core.Global" Version="1.0.3.5" />
 
-		<PackageReference Include="PolyhydraGames.Core.Models" Version="1.0.0.22" />
+		<PackageReference Include="PolyhydraGames.Core.Models" Version="1.0.0.23" />
 
-		<PackageReference Include="PolyhydraGames.Extensions" Version="2.1.1.50" />
+		<PackageReference Include="PolyhydraGames.Extensions" Version="2.1.1.51" />
 		<PackageReference Include="StackExchange.Redis" Version="2.7.33" />
 		<PackageReference Include="coverlet.collector" Version="6.0.2">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
-		<PackageReference Include="PolyhydraGames.Core.Test" Version="1.0.0.13" />
+		<PackageReference Include="PolyhydraGames.Core.Test" Version="1.0.0.14" />
 		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.9.0" />
 		<PackageReference Include="Moq" Version="4.20.70" />
 		<PackageReference Include="NUnit" Version="4.1.0" />
