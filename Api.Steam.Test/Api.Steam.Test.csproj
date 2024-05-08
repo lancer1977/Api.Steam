@@ -32,8 +32,4 @@
 		</PackageReference>
 	</ItemGroup>
 
-	<ItemGroup>
-	  <ProjectReference Include="..\Api.Steam\PolyhydraGames.Api.Steam.csproj" /> 
-	</ItemGroup>
-
 </Project>
