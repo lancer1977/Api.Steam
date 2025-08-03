@@ -396,3 +396,5 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+/Api.Steam.Test/TextFile1.txt
+/Api.Steam.Test/SteamKeys.csv
