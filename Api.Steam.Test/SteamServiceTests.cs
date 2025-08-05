@@ -7,9 +7,7 @@ using PolyhydraGames.Core.Test;
 using StackExchange.Redis;
 using System.Diagnostics;
 using PolyhydraGames.Core.Models;
-using PolyhydraGames.Extensions;
-using PolyhydraGames.Streaming.SQL.Models;
-using PolyhydraGames.Streaming.Test;
+using PolyhydraGames.Extensions; 
 
 namespace Api.Steam.Test;
 
