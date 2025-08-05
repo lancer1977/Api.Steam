@@ -32,16 +32,4 @@
 		</PackageReference>
 	</ItemGroup>
 
-	<ItemGroup>
-	  <ProjectReference Include="..\..\Api.Streaming\SQL\PolyhydraGames.Streaming.SQL.csproj" />
-	  <ProjectReference Include="..\..\Api.Streaming\Test\PolyhydraGames.Streaming.Test.csproj" />
-	  <ProjectReference Include="..\Api.Steam\PolyhydraGames.Api.Steam.csproj" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <None Update="TextFile1.txt">
-	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	  </None>
-	</ItemGroup>
-
 </Project>
