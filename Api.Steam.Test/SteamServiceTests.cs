@@ -71,7 +71,7 @@ public class SteamServiceTests
     [Test]
     public async Task GetSimpleGames()
     {
-        var app = await _steamService.GetSimpleGames();
+        var app = await _steamService.GetSimpleGames("");
         Assert.That(app.Any());
     }
 
