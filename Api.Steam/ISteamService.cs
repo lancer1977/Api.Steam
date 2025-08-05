@@ -6,6 +6,7 @@ public interface ISteamService
 {
     public Task<GameResult> GetGameData(int id);
     public Task<GameResult> GetGameData(string id);
-    Task<IEnumerable<SimpleSteamGame>> GetSimpleGames();
+    Task<List<SimpleSteamGame>> GetSimpleGamesCached();
+    Task<IEnumerable<SimpleSteamGame>> GetSimpleGames(string filter, int count = 50);
 
 }

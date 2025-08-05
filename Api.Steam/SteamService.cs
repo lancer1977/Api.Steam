@@ -10,7 +10,7 @@ public class SteamService : ISteamService
 {
     private readonly HttpClient _client;
     private readonly ICacheService _redis;
-
+    private List<SimpleSteamGame> _cachedGames;
     public SteamService(HttpClient client, ICacheService redis)
     {
         _client = client;
@@ -19,7 +19,7 @@ public class SteamService : ISteamService
 
     public async Task<GameResult> GetGameData(string name)
     {
-        var result = await GetSimpleGames();
+        var result = await GetSimpleGamesCached();
         var game = result.OrderBy(x => x.name.LevenshteinDistance(name)).First(x => x.name == name);
         return await GetGameData(game.appid);
 
@@ -48,38 +48,58 @@ public class SteamService : ISteamService
         var gameResult = JsonSerializer.Deserialize<SteamRootobject>(result);
         return gameResult.Game;
     }
-    public async Task<IEnumerable<SimpleSteamGame>> GetSimpleGames()
-    {
-        var key = nameof(GetSimpleGames);
 
+    public async Task<IEnumerable<SimpleSteamGame>> GetSimpleGames(string filter, int count = 50)
+    {
+        // Ensure games are cached in memory
+        var allGames = await GetSimpleGamesCached();
+
+        if (string.IsNullOrWhiteSpace(filter))
+            return allGames.Take(count);
+
+        return allGames
+            .Where(x => x.name.Contains(filter, StringComparison.OrdinalIgnoreCase))
+            .Take(count);
+    }
+
+    public async Task<List<SimpleSteamGame>> GetSimpleGamesCached()
+    {
+        if (_cachedGames != null)
+            return _cachedGames;
+
+        var key = nameof(GetSimpleGames);
         var result = await _redis.GetString(key, async () =>
         {
             try
             {
                 var address = "https://api.steampowered.com/ISteamApps/GetAppList/v2/";
-                var result = await _client.GetAsync(address);
-                var content = await result.Content.ReadAsStringAsync();
-                return content;
+                var response = await _client.GetAsync(address);
+                return await response.Content.ReadAsStringAsync();
             }
-            catch (Exception e)
+            catch
             {
-                throw e;
+                throw;
             }
         });
+
         var jsonObject = JsonDocument.Parse(result).RootElement;
-        var apps = new List<SimpleSteamGame>();
         var appsArray = jsonObject.GetProperty("applist").GetProperty("apps");
+
+        _cachedGames = new List<SimpleSteamGame>(appsArray.GetArrayLength());
         foreach (var appElement in appsArray.EnumerateArray())
         {
-            var app = new SimpleSteamGame
+            var name = appElement.GetProperty("name").GetString();
+            if (!string.IsNullOrWhiteSpace(name))
             {
-                appid = appElement.GetProperty("appid").GetInt32(),
-                name = appElement.GetProperty("name").GetString()
-            };
-            apps.Add(app);
+                _cachedGames.Add(new SimpleSteamGame
+                {
+                    appid = appElement.GetProperty("appid").GetInt32(),
+                    name = name
+                });
+            }
         }
-        //var gameResult = JsonSerializer.Deserialize<List<SimpleSteamGame>>(result);
-        return apps;
+
+        return _cachedGames;
     }
 
 
