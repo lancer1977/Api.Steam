@@ -22,7 +22,7 @@ public class SteamGame
     public int SteamAppId { get; set; }
 
     [JsonPropertyName("required_age")]
-    public int RequiredAge { get; set; }
+    public string? RequiredAge { get; set; }
 
     [JsonPropertyName("is_free")]
     public bool IsFree { get; set; }
