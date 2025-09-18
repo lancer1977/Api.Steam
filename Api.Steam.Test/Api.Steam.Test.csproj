@@ -16,7 +16,7 @@
 		<PackageReference Include="PolyhydraGames.Core.Models" Version="1.0.1.12" />
 
 		<PackageReference Include="PolyhydraGames.Extensions" Version="2.1.1.57" />
-		<PackageReference Include="StackExchange.Redis" Version="2.9.11" />
+		<PackageReference Include="StackExchange.Redis" Version="2.9.17" />
 		<PackageReference Include="coverlet.collector" Version="6.0.4">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
