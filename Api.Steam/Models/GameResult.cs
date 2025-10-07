@@ -7,5 +7,5 @@ public class GameResult
     [JsonPropertyName("success")]
     public bool Success { get; set; }
     [JsonPropertyName("data")]
-    public SteamGame Data { get; set; }
+    public SteamGameDetail Data { get; set; }
 }

@@ -29,13 +29,13 @@ namespace PolyhydraGames.Api.Steam
         public async Task<GameResult> GetGameData(string name, bool forceRefresh = false)
         {
             var allGames = await GetSimpleGamesCached(forceRefresh);
-            var game = allGames.OrderBy(x => x.name.LevenshteinDistance(name))
-                .FirstOrDefault(x => x.name.Equals(name, StringComparison.OrdinalIgnoreCase));
+            var game = allGames.OrderBy(x => x.Name.LevenshteinDistance(name))
+                .FirstOrDefault(x => x.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
 
             if (game == null)
                 throw new InvalidOperationException($"Game '{name}' not found in Steam app list.");
 
-            return await GetGameData(game.appid, forceRefresh);
+            return await GetGameData(game.AppId, forceRefresh);
         }
 
         // ------------------------------------------------------------------------
@@ -74,7 +74,7 @@ namespace PolyhydraGames.Api.Steam
                 return allGames.Take(count);
 
             return allGames
-                .Where(x => x.name.Contains(filter, StringComparison.OrdinalIgnoreCase))
+                .Where(x => x.Name.Contains(filter, StringComparison.OrdinalIgnoreCase))
                 .Take(count);
         }
 
@@ -110,8 +110,8 @@ namespace PolyhydraGames.Api.Steam
                 {
                     _cachedGames.Add(new SimpleSteamGame
                     {
-                        appid = appElement.GetProperty("appid").GetInt32(),
-                        name = name
+                        AppId = appElement.GetProperty("appid").GetInt32(),
+                        Name = name
                     });
                 }
             }

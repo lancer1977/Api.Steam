@@ -2,7 +2,7 @@
 {
     public class SimpleSteamGame
     {
-        public int appid { get; set; }
-        public string name { get; set; }
+        public int AppId { get; set; }
+        public string Name { get; set; }
     }
 }
