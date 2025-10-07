@@ -56,7 +56,7 @@ public class SteamServiceTests
 
     public async Task<SimpleSteamGame> GetGameData(string name,IEnumerable<SimpleSteamGame> result)
     {
-        var game = result.OrderBy(x => x.name.LevenshteinDistance(name)).First();
+        var game = result.OrderBy(x => x.Name.LevenshteinDistance(name)).First();
         return game;
     }
     [TestCase("Bomb Rush Cyberfunk", ExpectedResult = 1353230),
@@ -64,7 +64,7 @@ public class SteamServiceTests
     public async Task<int> GetBackgroundFolderRecords(string name)
     {
         var app = await _steamService.GetGameData(name);
-        return app.Data.AppId;
+        return app.Data.SteamAppId;
 
     }
 

@@ -52,8 +52,8 @@ namespace Api.Steam.Test
         public async Task<int> GetBackgroundFolderRecords_ByName_ShouldReturnExpectedId(string name)
         {
             var app = await _steamService.GetGameData(name);
-            Assert.That(app.Data.AppId, Is.GreaterThan(0));
-            return app.Data.AppId;
+            Assert.That(app.Data.SteamAppId, Is.GreaterThan(0));
+            return app.Data.SteamAppId;
         }
 
         [Test]
