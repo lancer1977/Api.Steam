@@ -6,7 +6,7 @@ namespace PolyhydraGames.Api.Steam;
 
 public static class SteamExtensions
 {
-    public static IGame ToGame(this SteamGame result)
+    public static IGame ToGame(this SteamGameDetail result)
     {
         return new SteamStreamerGame()
         {

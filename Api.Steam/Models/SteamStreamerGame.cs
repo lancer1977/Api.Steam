@@ -1,6 +1,6 @@
 using PolyhydraGames.Core.Interfaces.Gaming;
 
-namespace PolyhydraGames.Api.Steam;
+namespace PolyhydraGames.Api.Steam.Models;
 
 public class SteamStreamerGame : IGame
 {

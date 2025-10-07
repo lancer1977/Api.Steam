@@ -7,7 +7,7 @@ using PolyhydraGames.Core.Test;
 using StackExchange.Redis;
 using System.Diagnostics;
 using PolyhydraGames.Core.Models;
-using PolyhydraGames.Extensions; 
+using PolyhydraGames.Extensions;
 
 namespace Api.Steam.Test;
 
@@ -25,7 +25,7 @@ public class SteamServiceTests
     public SteamServiceTests()
     {
 
-        _host = Fixture.Create((services) =>
+        _host = Fixture.Create((services,config) =>
         {
             services.AddSingleton(new HttpClient());
             services.AddSingleton<IConnectionMultiplexer>((x) => ConnectionMultiplexer.Connect(Endpoint));
@@ -64,7 +64,7 @@ public class SteamServiceTests
     public async Task<int> GetBackgroundFolderRecords(string name)
     {
         var app = await _steamService.GetGameData(name);
-        return app.Data.SteamAppId;
+        return app.Data.AppId;
 
     }
 
@@ -79,30 +79,5 @@ public class SteamServiceTests
     {
         Console.WriteLine(value);
         Debug.WriteLine(value);
-    }
-}
-
-
-public static class Fixture
-{
-    public static IHost Create(Action<IServiceCollection> registrations)
-    {
-        // Arrange: Create the HostBuilder
-        var hostBuilder = new HostBuilder()
-            .ConfigureServices((context, services) =>
-            {
-                registrations.Invoke(services);
-                // Register the services for testing
-                //services.AddTransient<IMyService, MyService>();
-                //services.AddSingleton<IOtherDependency, MockOtherDependency>();
-            });
-        return hostBuilder.Build();
-    }
-
-    public static async Task<IHost> Run(this IHost host, Func<IServiceProvider, Task> act)
-    {
-        await host.StartAsync();
-        await act.Invoke(host.Services);
-        return host;
     }
 }

@@ -24,7 +24,7 @@
   </ItemGroup>
 
   <ItemGroup> 
-    <PackageReference Include="PolyhydraGames.Core.Interfaces" Version="2.0.0.43" /> 
+    <PackageReference Include="PolyhydraGames.Core.Interfaces" Version="2.0.0.44" /> 
     <PackageReference Include="PolyhydraGames.Core.Interfaces.Gaming" Version="1.0.0.12" /> 
     <PackageReference Include="PolyhydraGames.Extensions" Version="2.1.1.58" />
   </ItemGroup>

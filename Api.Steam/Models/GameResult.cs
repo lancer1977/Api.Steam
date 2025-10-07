@@ -9,9 +9,3 @@ public class GameResult
     [JsonPropertyName("data")]
     public SteamGame Data { get; set; }
 }
-
-public class SimpleSteamGame
-{
-    public int appid { get; set; }
-    public string name { get; set; }
-}
