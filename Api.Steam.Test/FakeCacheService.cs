@@ -42,6 +42,14 @@ public class FakeCacheService : ICacheService
             return result;
         }
     }
+    public Task<string> GetString(string key, Func<Task<string>> func, TimeSpan? ttl, bool forceRefresh = false)
+    {
+        throw new NotImplementedException();
+    }
+    public Task<T> Get<T>(string key, Func<Task<T>> func, TimeSpan? ttl, bool forceRefresh = false)
+    {
+        throw new NotImplementedException();
+    }
 
     public async Task Clear(string key)
     {
