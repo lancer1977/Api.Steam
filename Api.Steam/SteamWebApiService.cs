@@ -1,23 +1,28 @@
 using PolyhydraGames.Api.Steam.Models;
+using PolyhydraGames.Core.Interfaces;
 using System.Text.Json;
 
 namespace PolyhydraGames.Api.Steam;
 
 public class SteamWebApiService
 {
+    private readonly ICacheService _cache;
+    private readonly ISteamServiceConfiguration _config;
     private readonly HttpClient _http;
     private readonly string _apiKey;
     private const string BaseUrl = "https://api.steampowered.com/";
 
-    public SteamWebApiService(string apiKey, HttpClient? httpClient = null)
+    public SteamWebApiService(HttpClient client, ICacheService cache, ISteamServiceConfiguration config)
     {
-        _apiKey = apiKey ?? throw new ArgumentNullException(nameof(apiKey));
-        _http = httpClient ?? new HttpClient();
+        _cache = cache;
+        _config = config;
+        _apiKey = config.ApiKey;
+        _http = client ?? new HttpClient();
     }
 
     private async Task<T?> GetAsync<T>(string url)
     {
-        var response = await _http.GetAsync(url);
+        var response = await _cache.Get<HttpResponseMessage>(url, () => _http.GetAsync(url), _config.DefaultTtl);
         response.EnsureSuccessStatusCode();
         var json = await response.Content.ReadAsStringAsync();
         return JsonSerializer.Deserialize<T>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });

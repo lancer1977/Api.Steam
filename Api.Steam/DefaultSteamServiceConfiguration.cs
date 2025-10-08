@@ -5,6 +5,7 @@ namespace PolyhydraGames.Api.Steam
     /// </summary>
     public class DefaultSteamServiceConfiguration : ISteamServiceConfiguration
     {
+        public string ApiKey { get; set; }
         public TimeSpan AppListTtl => TimeSpan.FromHours(24);
         public TimeSpan AppDetailsTtl => TimeSpan.FromHours(24);
         public TimeSpan DefaultTtl => TimeSpan.FromHours(1);

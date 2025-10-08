@@ -5,6 +5,7 @@ namespace PolyhydraGames.Api.Steam
     /// </summary>
     public interface ISteamServiceConfiguration
     {
+        string ApiKey { get; }
         /// <summary>How long to cache Steam app list results.</summary>
         TimeSpan AppListTtl { get; }
 
