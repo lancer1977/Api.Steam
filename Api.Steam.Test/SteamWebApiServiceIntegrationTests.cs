@@ -7,7 +7,7 @@ namespace Api.Steam.Test
     [Category("Integration")]
     public class SteamWebApiServiceIntegrationTests
     {
-        private SteamWebApiService _service = null!;
+        private SteamService _service = null!;
         private string _steamApiKey = null!;
         private const string PublicSteamId = "76561197962914477"; // Valve public account (Gabe Newell)
         private const int TestAppId = 531510; // Team Fortress 2
@@ -28,7 +28,7 @@ namespace Api.Steam.Test
                 Assert.Ignore("Steam API key not set — skipping live integration tests.");
             }
 
-            _service = new SteamWebApiService(_steamApiKey);
+            //_service = new SteamWebApiService(new HttpClient(), _);
         }
 
         // ------------------------------------------------------------
