@@ -11,6 +11,7 @@ namespace PolyhydraGames.Api.Steam;
 /// </summary>
 public class SteamService : ISteamService
 {
+    public string BreadID => "76561197962914477";
     private readonly HttpClient _client;
     private readonly ICacheService _cache;
     private readonly ISteamServiceConfiguration _config;
@@ -190,6 +191,13 @@ public class SteamService : ISteamService
             url += $"&count={count}";
         return await GetAsync<GetRecentlyPlayedGamesResponse>(url);
     }
+    //public async Task<GetRecentlyPlayedGamesResponse?> GetWishlist(string steamId )
+    //{
+    //    var url = $"https://store.steampowered.com/wishlist/profiles/{steamId}/wishlistdata/";
+    //    if (count > 0)
+    //        url += $"&count={count}";
+    //    return await GetAsync<GetRecentlyPlayedGamesResponse>(url);
+    //}
 
     // ------------------------------------------------------------
     //  ISteamWebAPIUtil
