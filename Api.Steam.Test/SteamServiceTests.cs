@@ -14,7 +14,7 @@ namespace Api.Steam.Test;
 [TestFixture]
 public class SteamServiceTests
 {
-    ISteamService _steamService;
+    private ISteamService _steamService;
 
 #pragma warning disable NUnit1032
     private readonly IHost _host;
