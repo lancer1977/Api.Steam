@@ -15,5 +15,7 @@ public class SteamStreamerGame : IGame
     public int Year { get; set; }
     public string ImageUrl { get; set; }
     public string BackgroundImageUrl { get; set; }
+    public string Slug { get; set; }
+    public string MediaUrl { get; set; }
     public IList<IFileRecord> Media { get; set; }
 }
