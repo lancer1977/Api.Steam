@@ -94,7 +94,7 @@ public class SteamService : ISteamService
 
         var result = await _cache.GetString(key, async () =>
         {
-            var address = "https://api.steampowered.com/ISteamApps/GetAppList/v2/";
+            var address = "https://api.steampowered.com/IStoreService/GetAppList/v2/";
             var response = await _client.GetAsync(address);
             response.EnsureSuccessStatusCode();
             Debug.WriteLine("Fetched app list from Steam API.");
