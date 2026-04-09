@@ -15,7 +15,7 @@ namespace PolyhydraGames.Api.Steam.Models
         string? RealName,
         string? PrimaryClanId,
         long? TimeCreated,
-        int? GameId,
+        string? GameId,
         string? GameExtraInfo,
         string? LocCountryCode,
         string? LocStateCode,
