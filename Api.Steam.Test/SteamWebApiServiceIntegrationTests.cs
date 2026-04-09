@@ -25,10 +25,16 @@ namespace Api.Steam.Test
 
             if (string.IsNullOrWhiteSpace(_steamApiKey))
             {
-                Assert.Ignore("Steam API key not set — skipping live integration tests.");
+                Assert.Ignore("Steam API key not set - skipping live integration tests.");
             }
 
-            //_service = new SteamWebApiService(new HttpClient(), _);
+            _service = new SteamService(
+                new HttpClient(),
+                new PassThroughCacheService(),
+                new DefaultSteamServiceConfiguration
+                {
+                    ApiKey = _steamApiKey
+                });
         }
 
         // ------------------------------------------------------------

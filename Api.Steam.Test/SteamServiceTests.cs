@@ -1,12 +1,4 @@
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using PolyhydraGames.Api.Steam;
 using PolyhydraGames.Api.Steam.Models;
-using PolyhydraGames.Core.Interfaces;
-using PolyhydraGames.Core.Test;
-using StackExchange.Redis;
-using System.Diagnostics;
-using PolyhydraGames.Core.Models;
 using PolyhydraGames.Extensions;
 
 namespace Api.Steam.Test;
@@ -14,70 +6,88 @@ namespace Api.Steam.Test;
 [TestFixture]
 public class SteamServiceTests
 {
-    private ISteamService _steamService;
-
-#pragma warning disable NUnit1032
-    private readonly IHost _host;
-#pragma warning restore NUnit1032
-
-    private const string Endpoint = "192.168.0.21:6379";
-    //"redis.polyhydragames.com"
-    public SteamServiceTests()
+    [Test]
+    public async Task GetGameData_ById_ParsesStorePayload()
     {
+        var harness = new SteamServiceTestHarness();
+        harness.Handler.WhenContains(
+            "store.steampowered.com/api/appdetails?appids=346110",
+            """{"346110":{"success":true,"data":{"steam_appid":346110,"name":"ARK: Survival Evolved","short_description":"Survive the island","header_image":"https://cdn.example/ark.jpg","background":"https://cdn.example/ark-bg.jpg","release_date":{"coming_soon":false,"date":"Aug 27, 2017"},"developers":["Studio Wildcard"]}}}""");
 
-        _host = Fixture.Create((services,config) =>
-        {
-            services.AddSingleton(new HttpClient());
-            services.AddSingleton<IConnectionMultiplexer>((x) => ConnectionMultiplexer.Connect(Endpoint));
-            services.AddSingleton<ICacheService, FakeCacheService>();
-            services.AddSingleton<ISteamService, SteamService>();
-        });
-        _steamService = _host.Services.GetService<ISteamService>();
+        var result = await harness.Service.GetGameData(346110);
 
-    }
-
-    [SetUp]
-    public async Task Setup()
-    {
-
-        _steamService = _host.Services.GetRequiredService<ISteamService>();
-    }
-
-    [TestCase(1353230, ExpectedResult = "Bomb Rush Cyberfunk"),
-        TestCase(346110, ExpectedResult = "ARK: Survival Evolved")]
-    public async Task<string> GetBackgroundFolderRecords(int id)
-    {
-        var app = await _steamService.GetGameData(id);
-        return app.Data.Name;
-
-    }
-
-
-
-    public async Task<SimpleSteamGame> GetGameData(string name,IEnumerable<SimpleSteamGame> result)
-    {
-        var game = result.OrderBy(x => x.Name.LevenshteinDistance(name)).First();
-        return game;
-    }
-    [TestCase("Bomb Rush Cyberfunk", ExpectedResult = 1353230),
-     TestCase("ARK: Survival Evolved", ExpectedResult = 346110)]
-    public async Task<int> GetBackgroundFolderRecords(string name)
-    {
-        var app = await _steamService.GetGameData(name);
-        return app.Data.SteamAppId;
-
+        Assert.That(result.Success, Is.True);
+        Assert.That(result.Data.SteamAppId, Is.EqualTo(346110));
+        Assert.That(result.Data.Name, Is.EqualTo("ARK: Survival Evolved"));
+        Assert.That(result.Data.ShortDescription, Is.EqualTo("Survive the island"));
+        Assert.That(result.Data.ReleaseDate.date, Is.EqualTo("Aug 27, 2017"));
+        Assert.That(harness.Handler.Requests, Has.Count.EqualTo(1));
     }
 
     [Test]
-    public async Task GetSimpleGames()
+    public async Task GetGameData_ByName_ResolvesTheAppListThenDetails()
     {
-        var app = await _steamService.GetSimpleGames("");
-        Assert.That(app.Any());
+        var harness = new SteamServiceTestHarness();
+        harness.Handler.WhenContains(
+            "IStoreService/GetAppList/v2",
+            """
+            {"applist":{"apps":[
+              {"appid":1353230,"name":"Bomb Rush Cyberfunk"},
+              {"appid":346110,"name":"ARK: Survival Evolved"}
+            ]}}
+            """);
+        harness.Handler.WhenContains(
+            "store.steampowered.com/api/appdetails?appids=1353230",
+            """{"1353230":{"success":true,"data":{"steam_appid":1353230,"name":"Bomb Rush Cyberfunk","short_description":"Inline skating chaos","header_image":"https://cdn.example/brc.jpg","background":"https://cdn.example/brc-bg.jpg","release_date":{"coming_soon":false,"date":"Aug 18, 2023"},"developers":["Team Reptile"]}}}""");
+
+        var result = await harness.Service.GetGameData("Bomb Rush Cyberfunk");
+
+        Assert.That(result.Data.SteamAppId, Is.EqualTo(1353230));
+        Assert.That(result.Data.Name, Is.EqualTo("Bomb Rush Cyberfunk"));
+        Assert.That(harness.Handler.Requests, Has.Count.EqualTo(2));
+        Assert.That(harness.Handler.Requests[0].AbsoluteUri, Does.Contain("GetAppList/v2"));
+        Assert.That(harness.Handler.Requests[1].AbsoluteUri, Does.Contain("appdetails?appids=1353230"));
     }
 
-    public void WriteLine(string value)
+    [Test]
+    public async Task GetSimpleGames_FiltersNamesAndRespectsCount()
     {
-        Console.WriteLine(value);
-        Debug.WriteLine(value);
+        var harness = new SteamServiceTestHarness();
+        harness.Handler.WhenContains(
+            "IStoreService/GetAppList/v2",
+            """
+            {"applist":{"apps":[
+              {"appid":1353230,"name":"Bomb Rush Cyberfunk"},
+              {"appid":346110,"name":"ARK: Survival Evolved"},
+              {"appid":0,"name":""}
+            ]}}
+            """);
+
+        var games = (await harness.Service.GetSimpleGames("ark", count: 1)).ToList();
+
+        Assert.That(games, Has.Count.EqualTo(1));
+        Assert.That(games[0].AppId, Is.EqualTo(346110));
+        Assert.That(games[0].Name, Is.EqualTo("ARK: Survival Evolved"));
+    }
+
+    [Test]
+    public async Task GetSimpleGamesCached_UsesInMemoryCacheAfterFirstFetch()
+    {
+        var harness = new SteamServiceTestHarness();
+        harness.Handler.WhenContains(
+            "IStoreService/GetAppList/v2",
+            """
+            {"applist":{"apps":[
+              {"appid":1353230,"name":"Bomb Rush Cyberfunk"},
+              {"appid":346110,"name":"ARK: Survival Evolved"}
+            ]}}
+            """);
+
+        var first = await harness.Service.GetSimpleGamesCached();
+        var second = await harness.Service.GetSimpleGamesCached();
+
+        Assert.That(first, Has.Count.EqualTo(2));
+        Assert.That(second, Has.Count.EqualTo(2));
+        Assert.That(harness.Handler.Requests, Has.Count.EqualTo(1));
     }
 }

@@ -34,3 +34,10 @@ Has config (`hasConfig: true`) — likely requires Steam API key + base URL.
 ## Status
 
 ✅ **Working** (library + tests present)
+
+## Coverage Notes
+
+- [x] `SteamPlayer` deserializes Steam `gameid` as a string
+- [x] `SteamService` has deterministic unit coverage for app list, app details, and Steam Web API request shapes
+- [x] Live integration tests initialize `SteamService` correctly when a Steam API key is present
+- [ ] Add broader contract fixtures for rare or nested Steam payloads if new endpoints are introduced
