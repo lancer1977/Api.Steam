@@ -2,6 +2,15 @@
 
 A .NET 10 library for interacting with the Steam Web API.
 
+## Tags
+
+- api
+- dotnet
+- api-steam
+- docs
+- testing
+- steam
+
 ## Project Structure
 
 - `Api.Steam/`: Core library implementation including models for various Steam API responses.
