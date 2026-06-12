@@ -30,3 +30,15 @@ dotnet test PolyhydraGames.Api.Steam.sln
 
 ## Documentation
 Additional documentation can be found in the [docs](docs/) directory.
+
+## Docs
+
+- [Docs Index](./docs/README.md)
+- [Feature Index](./docs/features/README.md)
+- [Roadmap Index](./docs/roadmaps/README.md)
+
+## Docs
+
+- [Docs Index](./docs/README.md)
+- [Feature Index](./docs/features/README.md)
+- [Roadmap Index](./docs/roadmaps/README.md)
