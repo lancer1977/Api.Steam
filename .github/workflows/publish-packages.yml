@@ -1,0 +1,76 @@
+name: Publish NuGet package
+
+on:
+  release:
+    types:
+      - published
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  publish:
+    name: Build, test, pack, and publish
+    runs-on: ubuntu-latest
+    env:
+      BUILD_CONFIGURATION: Release
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Resolve package version
+        id: version
+        shell: bash
+        run: |
+          set -euo pipefail
+          tag="${GITHUB_REF_NAME}"
+          if [[ "${GITHUB_EVENT_NAME}" == "release" ]]; then
+            tag='${{ github.event.release.tag_name }}'
+          fi
+
+          version="${tag#v}"
+          echo "version=${version}" >> "$GITHUB_OUTPUT"
+          echo "Publishing version ${version}"
+
+      - name: Restore
+        run: |
+          sed -i "s|%GITHUB_TOKEN%|${{ secrets.GITHUB_TOKEN }}|" NuGet.Config
+          dotnet restore PolyhydraGames.Api.Steam.sln
+
+      - name: Build
+        run: dotnet build PolyhydraGames.Api.Steam.sln --configuration "$BUILD_CONFIGURATION" --no-restore
+
+      - name: Test
+        run: >-
+          dotnet test Api.Steam.Test/Api.Steam.Test.csproj
+          --configuration "$BUILD_CONFIGURATION"
+          --no-build
+          --verbosity normal
+
+      - name: Pack
+        run: |
+          rm -rf artifacts/packages
+          mkdir -p artifacts/packages
+          dotnet pack Api.Steam/PolyhydraGames.Api.Steam.csproj \
+            --configuration "$BUILD_CONFIGURATION" \
+            --no-build \
+            --output artifacts/packages \
+            /p:PackageVersion=${{ steps.version.outputs.version }}
+
+      - name: Publish to GitHub Packages
+        run: |
+          for package in artifacts/packages/*.nupkg; do
+            dotnet nuget push "$package" \
+              --source "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json" \
+              --api-key "${{ secrets.GITHUB_TOKEN }}" \
+              --skip-duplicate
+          done

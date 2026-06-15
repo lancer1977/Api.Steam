@@ -1,10 +1,11 @@
-# Starter pipeline
 name: 1.0.2.$(rev:r)
-variables: 
+
+variables:
 - name: Project.Path
   value: '**/PolyhydraGames.Api.Steam.csproj'
 - name: BuildConfiguration
   value: Release
+
 trigger:
   branches:
     include:
@@ -14,22 +15,40 @@ trigger:
     - Api.Steam
 
 jobs:
-- job: Phase_1 
+- job: Phase_1
   cancelTimeoutInMinutes: 1
   pool:
     name: Default
   steps:
   - checkout: self
 
-  - task: DotNetCoreCLI@2
+  - task: Bash@3
     inputs:
-      command: 'pack'
-      packagesToPack: '$(Project.Path)' 
-      versioningScheme: 'byBuildNumber'
-      arguments: '-c $(BuildConfiguration)' 
-  - task: DotNetCoreCLI@2
+      targetType: inline
+      script: |
+        set -euo pipefail
+        sed -i "s|%GITHUB_TOKEN%|$(NugetPat)|" NuGet.Config
+        dotnet restore PolyhydraGames.Api.Steam.sln
+
+  - task: Bash@3
     inputs:
-      command: 'push'
-      packagesToPush: '$(Build.ArtifactStagingDirectory)/*.nupkg'
-      nuGetFeedType: 'internal'
-      publishVstsFeed: '015fc12f-cd63-4ab4-8d6a-dc889e53bf70'
+      targetType: inline
+      script: |
+        set -euo pipefail
+        dotnet pack "$(Project.Path)" \
+          -c "$(BuildConfiguration)" \
+          --no-restore \
+          --output "$(Build.ArtifactStagingDirectory)" \
+          /p:PackageVersion="$(Build.BuildNumber)"
+
+  - task: Bash@3
+    inputs:
+      targetType: inline
+      script: |
+        set -euo pipefail
+        for package in "$(Build.ArtifactStagingDirectory)"/*.nupkg; do
+          dotnet nuget push "$package" \
+            --source "https://nuget.pkg.github.com/lancer1977/index.json" \
+            --api-key "$(NugetPat)" \
+            --skip-duplicate
+        done
