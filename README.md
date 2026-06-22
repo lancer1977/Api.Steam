@@ -2,6 +2,8 @@
 
 A .NET 10 library for interacting with the Steam Web API.
 
+[![publish](https://github.com/PolyhydraGames/Api.Steam/actions/workflows/publish.yml/badge.svg)](https://github.com/PolyhydraGames/Api.Steam/actions/workflows/publish.yml)
+
 ## Tags
 
 - api
@@ -27,6 +29,9 @@ The project uses NUnit for testing. To run tests:
 ```bash
 dotnet test PolyhydraGames.Api.Steam.sln
 ```
+
+## Packaging
+NuGet packages are published from GitHub Actions to GitHub Packages.
 
 ## Documentation
 Additional documentation can be found in the [docs](docs/) directory.
