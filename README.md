@@ -27,8 +27,11 @@ A .NET 10 library for interacting with the Steam Web API.
 ## Testing
 The project uses NUnit for testing. To run tests:
 ```bash
-dotnet test PolyhydraGames.Api.Steam.sln
+bash scripts/validate.sh
 ```
+
+Live Steam Web API tests skip unless `Steam:ApiKey` is configured through .NET
+configuration, user secrets, or environment variables.
 
 ## Packaging
 NuGet packages are published from GitHub Actions to GitHub Packages.
@@ -41,9 +44,4 @@ Additional documentation can be found in the [docs](docs/) directory.
 - [Docs Index](./docs/README.md)
 - [Feature Index](./docs/features/README.md)
 - [Roadmap Index](./docs/roadmaps/README.md)
-
-## Docs
-
-- [Docs Index](./docs/README.md)
-- [Feature Index](./docs/features/README.md)
-- [Roadmap Index](./docs/roadmaps/README.md)
+- [Health Baseline](./code_health.md)

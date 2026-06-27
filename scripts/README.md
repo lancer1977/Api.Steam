@@ -1,6 +1,21 @@
-# Script Template: .NET Coverage
+# Scripts
 
-This folder captures a reusable shell-script baseline for .NET coverage workflows.
+## Validation
+
+Run the repo-native validation lane with:
+
+```bash
+bash scripts/validate.sh
+```
+
+The command restores, builds, and tests `PolyhydraGames.Api.Steam.sln` in
+`Release` configuration. Live Steam API tests skip unless `Steam:ApiKey` is
+configured.
+
+## Coverage Template
+
+This folder also captures a reusable shell-script baseline for .NET coverage
+workflows.
 
 Copy the script into a product repo when you want a simple local command that:
 
